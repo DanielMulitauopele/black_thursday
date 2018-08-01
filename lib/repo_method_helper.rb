@@ -1,5 +1,4 @@
 module RepoMethodHelper
-
   def all
     @list
   end
@@ -18,9 +17,7 @@ module RepoMethodHelper
   end
 
   def create_id
-    sorted = all.sort_by do |each|
-      each.id
-    end
+    sorted = all.sort_by(&:id)
     last = sorted.last
     (last.id.to_i + 1).to_s
   end

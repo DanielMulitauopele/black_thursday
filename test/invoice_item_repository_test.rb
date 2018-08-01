@@ -4,7 +4,7 @@ require 'pry'
 
 class InvoiceItemRepositoryTest < Minitest::Test
   def setup
-    invoice_item_1 = InvoiceItem.new({
+    invoice_item_1 = InvoiceItem.new(
       id: 2345,
       item_id: 112,
       invoice_id: 522,
@@ -12,8 +12,8 @@ class InvoiceItemRepositoryTest < Minitest::Test
       quantity: 5,
       created_at: "2012-03-27 14:54:35 UTC",
       updated_at: "2012-03-27 14:54:35 UTC"
-      })
-    invoice_item_2 = InvoiceItem.new({
+    )
+    invoice_item_2 = InvoiceItem.new(
       id: 2346,
       item_id: 113,
       invoice_id: 316,
@@ -21,8 +21,8 @@ class InvoiceItemRepositoryTest < Minitest::Test
       quantity: 2,
       created_at: "2012-03-27 14:54:35 UTC",
       updated_at: "2012-03-27 14:54:35 UTC"
-      })
-    invoice_item_3 = InvoiceItem.new({
+    )
+    invoice_item_3 = InvoiceItem.new(
       id: 2347,
       item_id: 114,
       invoice_id: 222,
@@ -30,8 +30,8 @@ class InvoiceItemRepositoryTest < Minitest::Test
       quantity: 1,
       created_at: "2012-03-27 14:54:35 UTC",
       updated_at: "2012-03-27 14:54:35 UTC"
-      })
-    invoice_item_4 = InvoiceItem.new({
+    )
+    invoice_item_4 = InvoiceItem.new(
       id: 2348,
       item_id: 115,
       invoice_id: 453,
@@ -39,8 +39,8 @@ class InvoiceItemRepositoryTest < Minitest::Test
       quantity: 7,
       created_at: "2012-03-27 14:54:35 UTC",
       updated_at: "2012-03-27 14:54:35 UTC"
-      })
-    invoice_item_5 = InvoiceItem.new({
+    )
+    invoice_item_5 = InvoiceItem.new(
       id: 2349,
       item_id: 116,
       invoice_id: 846,
@@ -48,7 +48,7 @@ class InvoiceItemRepositoryTest < Minitest::Test
       quantity: 5,
       created_at: "2012-03-27 14:54:35 UTC",
       updated_at: "2012-03-27 14:54:35 UTC"
-      })
+    )
 
     invoice_items = [invoice_item_1, invoice_item_2, invoice_item_3, invoice_item_4, invoice_item_5]
     @invoice_item_repository = InvoiceItemRepository.new(invoice_items)
@@ -94,9 +94,9 @@ class InvoiceItemRepositoryTest < Minitest::Test
     attributes = {
       item_id: 7,
       invoice_id: 8,
-      unit_price: BigDecimal.new(10.99, 4),
+      unit_price: BigDecimal(10.99, 4),
       quantity: 1
-      }
+    }
     new_item_added = @invoice_item_repository.create(attributes)
     expected = @invoice_item_repository.list[-1]
     actual = new_item_added.last
@@ -111,20 +111,20 @@ class InvoiceItemRepositoryTest < Minitest::Test
       quantity: 1,
       created_at: Time.now,
       updated_at: Time.now
-      }
+    }
     updated_attributes = {
       quantity: 13,
       unit_price: 12.99
-      }
+    }
     @invoice_item_repository.create(new_attributes)
     new_invoice_item = @invoice_item_repository.list.last
 
-    assert_equal BigDecimal.new(10.99, 4), new_invoice_item.unit_price
+    assert_equal BigDecimal(10.99, 4), new_invoice_item.unit_price
 
     @invoice_item_repository.update(2350, updated_attributes)
     changed_invoice_item = @invoice_item_repository.list.last
 
-    assert_equal BigDecimal.new(12.99, 4), changed_invoice_item.unit_price
+    assert_equal BigDecimal(12.99, 4), changed_invoice_item.unit_price
     assert_equal 13, changed_invoice_item.quantity
 
     assert_equal new_invoice_item.id, changed_invoice_item.id

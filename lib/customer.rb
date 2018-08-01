@@ -5,7 +5,7 @@ class Customer
 
   attr_reader     :id,
                   :created_at
-                  
+
   def initialize(customer_hash)
     @id = customer_hash[:id].to_i
     @first_name = customer_hash[:first_name]

@@ -4,7 +4,7 @@ require 'pry'
 
 class ItemRepositoryTest < Minitest::Test
   def setup
-    item_1 = Item.new({
+    item_1 = Item.new(
       id: 4,
       name: "bottle",
       description: "holds water",
@@ -12,8 +12,8 @@ class ItemRepositoryTest < Minitest::Test
       updated_at: "1972-07-30 18:08:53 UTC",
       created_at: "1972-07-30 18:08:53 UTC",
       merchant_id: 90
-      })
-    item_2 = Item.new({
+    )
+    item_2 = Item.new(
       id: 5,
       name: "paper",
       description: "write on it",
@@ -21,8 +21,8 @@ class ItemRepositoryTest < Minitest::Test
       updated_at: "1972-07-30 18:08:53 UTC",
       created_at: "1972-07-30 18:08:53 UTC",
       merchant_id: 90
-      })
-    item_3 = Item.new({
+    )
+    item_3 = Item.new(
       id: 6,
       name: "tv",
       description: "watch stuff",
@@ -30,8 +30,8 @@ class ItemRepositoryTest < Minitest::Test
       updated_at: "1972-07-30 18:08:53 UTC",
       created_at: "1972-07-30 18:08:53 UTC",
       merchant_id: 50
-      })
-    item_4 = Item.new({
+    )
+    item_4 = Item.new(
       id: 7,
       name: "pencil",
       description: "writes things",
@@ -39,7 +39,7 @@ class ItemRepositoryTest < Minitest::Test
       updated_at: "1972-07-30 18:08:53 UTC",
       created_at: "1972-07-30 18:08:53 UTC",
       merchant_id: 50
-      })
+    )
 
     items = [item_1, item_2, item_3, item_4]
     @item_repository = ItemRepository.new(items)
@@ -84,7 +84,7 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_it_can_find_all_by_price
-    price = BigDecimal.new(7)
+    price = BigDecimal(7)
     expected = 1
     actual = @item_repository.find_all_by_price(price).count
     assert_equal expected, actual
@@ -103,12 +103,12 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_it_create_new_item_with_attributes
-    new_item_added = @item_repository.create({
+    new_item_added = @item_repository.create(
       name: "pots",
       description: "shiny",
       unit_price: "1000",
       merchant_id: "5555"
-      })
+    )
     expected = @item_repository.list[-1]
     actual = new_item_added.last
     assert_equal expected, actual
@@ -121,23 +121,24 @@ class ItemRepositoryTest < Minitest::Test
   end
 
   def test_it_can_update_attributes
-    @item_repository.create({
+    @item_repository.create(
       name: "pots",
       description: "shiny",
       unit_price: "1099",
       merchant_id: "5555"
-      })
+    )
     new_item = @item_repository.list.last
 
     assert_equal "pots", new_item.name
     assert_equal "shiny", new_item.description
     assert_equal 10.99, new_item.unit_price
 
-    @item_repository.update(8, {
+    @item_repository.update(
+      8,
       name: "chicken",
       description: "fat",
       unit_price: 12.00
-      })
+    )
     changed_item = @item_repository.list.last
 
     assert_equal "chicken", changed_item.name

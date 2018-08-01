@@ -5,7 +5,7 @@ require 'pry'
 
 class TransactionTest < MiniTest::Test
   def setup
-    @transaction = Transaction.new({
+    @transaction = Transaction.new(
       id: 6,
       invoice_id: 9,
       credit_card_number: "4242424242424242",
@@ -13,7 +13,7 @@ class TransactionTest < MiniTest::Test
       result: "success",
       created_at: "1972-07-30 18:08:53 UTC",
       updated_at: "2016-01-11 18:30:35 UTC"
-      })
+    )
   end
 
   def test_it_exists

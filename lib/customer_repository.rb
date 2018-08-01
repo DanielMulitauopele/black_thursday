@@ -26,14 +26,13 @@ class CustomerRepository
   end
 
   def create(attributes)
-    @list << Customer.new({
-      id: create_id,
+    @list << Customer.new(
+      id:         create_id,
       created_at: Time.now.to_s,
       updated_at: Time.now.to_s,
       first_name: attributes[:first_name],
-      last_name: attributes[:last_name]
-    })
-
+      last_name:  attributes[:last_name]
+    )
   end
 
   def update(id, attributes)

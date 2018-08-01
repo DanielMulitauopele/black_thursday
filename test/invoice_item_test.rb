@@ -5,7 +5,7 @@ require 'pry'
 
 class InvoiceItemTest < MiniTest::Test
   def setup
-    @invoice_item = InvoiceItem.new({
+    @invoice_item = InvoiceItem.new(
       id: 2345,
       item_id: 263562118,
       invoice_id: 522,
@@ -13,7 +13,7 @@ class InvoiceItemTest < MiniTest::Test
       quantity: 5,
       created_at: "2012-03-27 14:54:35 UTC",
       updated_at: "2012-03-27 14:54:35 UTC"
-      })
+    )
   end
 
   def test_it_exists
@@ -47,5 +47,4 @@ class InvoiceItemTest < MiniTest::Test
   def test_it_has_a_updated_time
     assert_equal Time.parse("2012-03-27 14:54:35 UTC"), @invoice_item.updated_at
   end
-
 end

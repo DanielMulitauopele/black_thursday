@@ -30,7 +30,6 @@ class SalesEngine
     @transactions = TransactionRepository.new(transactions)
     @customers = CustomerRepository.new(customers)
     @analyst = SalesAnalyst.new(@merchants, @items, @invoices, @invoice_items, @transactions, @customers)
-
   end
 
   def self.from_csv(csv_hash)
