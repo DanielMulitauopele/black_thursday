@@ -4,13 +4,6 @@ require 'date'
 class SalesAnalyst
   include RepoMethodHelper
 
-  attr_reader :merchant_repo,
-              :item_repo,
-              :invoice_repo,
-              :invoice_item_repo,
-              :transaction_repo,
-              :customer_repo
-
   def initialize(merchant_repo, item_repo, invoice_repo, invoice_item_repo, transaction_repo, customer_repo)
     @merchant_repo = merchant_repo
     @item_repo = item_repo
@@ -33,10 +26,10 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant_standard_deviation
-    items_per_merchant_array = items_per_merchant.map do |_key, value|
-      value
+    item_counts = items_per_merchant.map do |_merchant_id, item_count|
+      item_count
     end
-    standard_deviation(items_per_merchant_array, average_items_per_merchant)
+    standard_deviation(item_counts, average_items_per_merchant)
   end
 
   def merchants_with_high_item_count
@@ -113,10 +106,10 @@ class SalesAnalyst
     end
     invoice_counts_per_day = invoice_counts_by_day(invoice_created_day_of_week)
     stddev = standard_deviation(invoice_counts_per_day.values, average_invoice_counts_per_day)
-    day_with_highest_invoice_count = invoice_counts_per_day.find_all do |_day, invoice_count|
+    days_with_highest_invoice_count = invoice_counts_per_day.find_all do |_day, invoice_count|
       invoice_count > (stddev + average_invoice_counts_per_day).round.to_i
     end
-    pull_first_element_from_pair(day_with_highest_invoice_count)
+    pull_first_element_from_pair(days_with_highest_invoice_count)
   end
 
   def invoice_status(status)
@@ -148,7 +141,7 @@ class SalesAnalyst
     date_matched_invoices = @invoice_repo.list.find_all do |invoice|
       invoice.created_at == date
     end
-    revenue_of_date_matched_invoices = invoice_total_over_data_set(date_matched_invoices)
+    revenue_of_date_matched_invoices = invoice_total_enumerable(date_matched_invoices)
     sum(revenue_of_date_matched_invoices)
   end
 
@@ -173,19 +166,18 @@ class SalesAnalyst
     successful_invoices = all_merchant_invoices.find_all do |invoice|
       invoice_paid_in_full?(invoice.id)
     end
-    revenue_of_successful_invoices = invoice_total_over_data_set(successful_invoices.map)
+    revenue_of_successful_invoices = invoice_total_enumerable(successful_invoices.map)
     sum(revenue_of_successful_invoices)
   end
 
   def merchants_ranked_by_revenue
     revenue_earned_per_merchant = @merchant_repo.list.map do |merchant|
-      [merchant.id, revenue_by_merchant(merchant.id)]
+      [merchant, revenue_by_merchant(merchant.id)]
     end
     sorted_highest_rev_per_mer = revenue_earned_per_merchant.sort_by do |_merchant, revenue|
       revenue
     end.reverse
     sorted_highest_merchants = pull_first_element_from_pair(sorted_highest_rev_per_mer)
-    convert_to_merchants_objects(sorted_highest_merchants)
   end
 
   def top_revenue_earners(number_of_top=20)
@@ -280,7 +272,7 @@ class SalesAnalyst
     end
   end
 
-  def invoice_total_over_data_set(array)
+  def invoice_total_enumerable(array)
     array.map do |invoice|
       invoice_total(invoice.id)
     end
