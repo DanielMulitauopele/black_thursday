@@ -1,7 +1,6 @@
 require_relative '../lib/repo_method_helper.rb'
 require 'date'
 
-
 class SalesAnalyst
   include RepoMethodHelper
 
@@ -34,15 +33,15 @@ class SalesAnalyst
   end
 
   def average_items_per_merchant_standard_deviation
-    items_per_merchant_array = items_per_merchant.map do |key, value|
+    items_per_merchant_array = items_per_merchant.map do |_key, value|
       value
     end
     standard_deviation(items_per_merchant_array, average_items_per_merchant)
   end
 
   def merchants_with_high_item_count
-    stddev =  average_items_per_merchant_standard_deviation
-    merchant_ids = items_per_merchant.find_all do |merchant_id, item_count|
+    stddev = average_items_per_merchant_standard_deviation
+    merchant_ids = items_per_merchant.find_all do |_merchant_id, item_count|
       item_count > (stddev + average_items_per_merchant)
     end
     convert_to_merchants_objects(merchant_ids)
@@ -50,9 +49,7 @@ class SalesAnalyst
 
   def average_item_price_for_merchant(merchant_id)
     item_list = @item_repo.find_all_by_merchant_id(merchant_id)
-    prices = item_list.map do |item|
-      item.unit_price
-    end
+    prices = item_list.map(&:unit_price)
     average(sum(prices).to_f, items_per_merchant[merchant_id.to_s]).to_d
   end
 
@@ -88,7 +85,7 @@ class SalesAnalyst
 
   def top_merchants_by_invoice_count
     stddev = average_invoices_per_merchant_standard_deviation
-    top_merchants_ids_and_counts = invoices_per_merchant.find_all do |merchant, invoice_count|
+    top_merchants_ids_and_counts = invoices_per_merchant.find_all do |_merchant, invoice_count|
       invoice_count > ((stddev * 2) + average_invoices_per_merchant)
     end
     top_merchants_ids = pull_first_element_from_pair(top_merchants_ids_and_counts)
@@ -97,7 +94,7 @@ class SalesAnalyst
 
   def bottom_merchants_by_invoice_count
     stddev = average_invoices_per_merchant_standard_deviation
-    bottom_merchants_and_counts_array = invoices_per_merchant.find_all do |merchant, invoice_count|
+    bottom_merchants_and_counts_array = invoices_per_merchant.find_all do |_merchant, invoice_count|
       invoice_count < (average_invoices_per_merchant - (stddev * 2))
     end
     bottom_merchants_ids = pull_first_element_from_pair(bottom_merchants_and_counts_array)
@@ -114,11 +111,9 @@ class SalesAnalyst
     invoice_created_day_of_week = @invoice_repo.list.map do |invoice|
       weekday(invoice.created_at.to_s)
     end
-    invoice_counts_by_day = invoice_created_day_of_week.each_with_object(Hash.new(0)) do |day, counts|
-      counts[day] += 1
-    end
-    stddev = standard_deviation(invoice_counts_by_day.values, average_invoice_counts_per_day)
-    day_with_highest_invoice_count = invoice_counts_by_day.find_all do |_day, invoice_count|
+    invoice_counts_per_day = invoice_counts_by_day(invoice_created_day_of_week)
+    stddev = standard_deviation(invoice_counts_per_day.values, average_invoice_counts_per_day)
+    day_with_highest_invoice_count = invoice_counts_per_day.find_all do |_day, invoice_count|
       invoice_count > (stddev + average_invoice_counts_per_day).round.to_i
     end
     pull_first_element_from_pair(day_with_highest_invoice_count)
@@ -186,15 +181,15 @@ class SalesAnalyst
     revenue_earned_per_merchant = @merchant_repo.list.map do |merchant|
       [merchant.id, revenue_by_merchant(merchant.id)]
     end
-    sorted_highest_rev_per_mer = revenue_earned_per_merchant.sort_by do |merchant, revenue|
+    sorted_highest_rev_per_mer = revenue_earned_per_merchant.sort_by do |_merchant, revenue|
       revenue
     end.reverse
     sorted_highest_merchants = pull_first_element_from_pair(sorted_highest_rev_per_mer)
     convert_to_merchants_objects(sorted_highest_merchants)
   end
 
-  def top_revenue_earners(number_of_top = 20)
-    number_of_top = number_of_top - 1
+  def top_revenue_earners(number_of_top=20)
+    number_of_top -= 1
     merchants_ranked_by_revenue[0..number_of_top]
   end
 
@@ -243,7 +238,7 @@ class SalesAnalyst
 
   def standard_deviation(array_of_values, calculated_average_of_values)
     stddev_sum = array_of_values.inject(0) do |sum, number|
-      sum + ((number - calculated_average_of_values) ** 2)
+      sum + ((number - calculated_average_of_values)**2)
     end
     divided = (stddev_sum / array_of_values.count)
     Math.sqrt(divided).round(2)
@@ -264,19 +259,17 @@ class SalesAnalyst
   end
 
   def unit_prices_of_every_item
-    @item_repo.list.map do |item|
-      item.unit_price
-    end
+    @item_repo.list.map(&:unit_price)
   end
 
   def convert_to_merchants_objects(array)
-    array.map do |merchant_id, value|
+    array.map do |merchant_id, _value|
       @merchant_repo.find_by_id(merchant_id.to_i)
     end
   end
 
   def convert_to_item_objects(array)
-    array.map do |item_id, value|
+    array.map do |item_id, _value|
       @item_repo.find_by_id(item_id)
     end
   end
@@ -295,7 +288,7 @@ class SalesAnalyst
 
   def total_revenue(array)
     array.inject(0) do |sum, num|
-        sum + (num.unit_price * num.quantity.to_i)
+      sum + (num.unit_price * num.quantity.to_i)
     end
   end
 
@@ -311,5 +304,11 @@ class SalesAnalyst
       @invoice_item_repo.find_all_by_invoice_id(invoice.id) unless invoice_paid_in_full?(invoice.id) == false
     end.flatten.compact
     invoice_items.group_by(&:item_id)
+  end
+
+  def invoice_counts_by_day(array)
+    array.each_with_object(Hash.new(0)) do |day, counts|
+      counts[day] += 1
+    end
   end
 end

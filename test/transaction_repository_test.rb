@@ -4,7 +4,7 @@ require 'pry'
 
 class TransactionRepositoryTest < Minitest::Test
   def setup
-    transaction_1 = Transaction.new({
+    transaction_1 = Transaction.new(
       id: 6,
       invoice_id: 9,
       credit_card_number: "4242424242424242",
@@ -12,8 +12,8 @@ class TransactionRepositoryTest < Minitest::Test
       result: "success",
       created_at: "1972-07-30 18:08:53 UTC",
       updated_at: "2016-01-11 18:30:35 UTC"
-      })
-    transaction_2 = Transaction.new({
+    )
+    transaction_2 = Transaction.new(
       id: 7,
       invoice_id: 10,
       credit_card_number: "4242424275757575",
@@ -21,8 +21,8 @@ class TransactionRepositoryTest < Minitest::Test
       result: "success",
       created_at: "1972-07-30 18:08:53 UTC",
       updated_at: "2016-01-11 18:30:35 UTC"
-      })
-    transaction_3 = Transaction.new({
+    )
+    transaction_3 = Transaction.new(
       id: 8,
       invoice_id: 9,
       credit_card_number: "8686868642424242",
@@ -30,7 +30,7 @@ class TransactionRepositoryTest < Minitest::Test
       result: "failed",
       created_at: "1972-07-30 18:08:53 UTC",
       updated_at: "2016-01-11 18:30:35 UTC"
-      })
+    )
 
     transactions = [transaction_1, transaction_2, transaction_3]
     @transaction_repository = TransactionRepository.new(transactions)
@@ -79,33 +79,34 @@ class TransactionRepositoryTest < Minitest::Test
   end
 
   def test_it_create_new_transaction_with_attributes
-    new_transaction_added = @transaction_repository.create({
+    new_transaction_added = @transaction_repository.create(
       invoice_id: "99999999",
       credit_card_number: "4646464675757575",
       credit_card_expiration_date: "0823",
       result: "failed"
-      })
+    )
     expected = @transaction_repository.list[-1]
     actual = new_transaction_added.last
     assert_equal expected, actual
   end
 
   def test_it_can_update_attributes
-    @transaction_repository.create({
+    @transaction_repository.create(
       invoice_id: "99999999",
       credit_card_number: "4646464675757575",
       credit_card_expiration_date: "1123",
       result: "failed"
-      })
+    )
     new_transaction = @transaction_repository.list.last
 
     assert_equal "4646464675757575", new_transaction.credit_card_number
 
-    @transaction_repository.update(9, {
+    @transaction_repository.update(
+      9,
       credit_card_number: "4646464692929292",
       credit_card_expiration_date: "1205",
       result: "success"
-      })
+    )
     changed_transaction = @transaction_repository.list.last
 
     assert_equal "4646464692929292", changed_transaction.credit_card_number

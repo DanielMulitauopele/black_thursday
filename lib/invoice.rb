@@ -8,7 +8,6 @@ class Invoice
                 :merchant_id,
                 :created_at
 
-
   attr_accessor :status,
                 :updated_at
 
@@ -20,5 +19,4 @@ class Invoice
     @created_at = Time.parse(invoice_hash[:created_at])
     @updated_at = Time.parse(invoice_hash[:updated_at])
   end
-
 end

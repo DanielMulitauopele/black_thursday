@@ -3,24 +3,24 @@ require_relative '../lib/merchant_repository.rb'
 
 class MerchantRepositoryTest < Minitest::Test
   def setup
-    merchant_1 = Merchant.new({
+    merchant_1 = Merchant.new(
       name: "Bills Tools",
       id: "123",
       created_at: "2010-12-10",
       updated_at: "2011-12-04"
-      })
-    merchant_2 = Merchant.new({
+    )
+    merchant_2 = Merchant.new(
       name: "Billys Tools",
       id: "124",
       created_at: "2010-12-10",
       updated_at: "2011-12-04"
-      })
-    merchant_3 = Merchant.new({
+    )
+    merchant_3 = Merchant.new(
       name: "Bilbos Tools",
       id: "125",
       created_at: "2010-12-10",
       updated_at: "2011-12-04"
-      })
+    )
 
     merchants = [merchant_1, merchant_2, merchant_3]
     @merchant_repository = MerchantRepository.new(merchants)
@@ -77,7 +77,7 @@ class MerchantRepositoryTest < Minitest::Test
   end
 
   def test_it_create_new_merchant_with_attributes
-    new_merchant_added = @merchant_repository.create({name: "Bill Nye"})
+    new_merchant_added = @merchant_repository.create(name: "Bill Nye")
     expected = @merchant_repository.list[-1]
     actual = new_merchant_added.last
     assert_equal expected, actual
@@ -87,7 +87,7 @@ class MerchantRepositoryTest < Minitest::Test
     last_merchant = @merchant_repository.list[-1].name
     assert_equal "Bilbos Tools", last_merchant
 
-    renamed_merchant = @merchant_repository.update(125, {name: "Eric LaSalle"})
+    renamed_merchant = @merchant_repository.update(125, name: "Eric LaSalle")
     assert_equal "Eric LaSalle", renamed_merchant
   end
 

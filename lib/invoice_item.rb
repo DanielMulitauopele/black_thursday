@@ -8,7 +8,6 @@ class InvoiceItem
                 :invoice_id,
                 :created_at
 
-
   attr_accessor :unit_price,
                 :quantity,
                 :updated_at
@@ -22,5 +21,4 @@ class InvoiceItem
     @created_at = Time.parse(invoice_item_hash[:created_at])
     @updated_at = Time.parse(invoice_item_hash[:updated_at])
   end
-
 end

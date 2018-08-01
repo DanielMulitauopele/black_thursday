@@ -4,7 +4,7 @@ require 'csv'
 
 class MerchantRepository
   include RepoMethodHelper
-  
+
   attr_reader :list
 
   def initialize(merchants)
@@ -19,12 +19,12 @@ class MerchantRepository
   end
 
   def create(merchant_name)
-    @list << Merchant.new({
-      name: merchant_name[:name],
-      id: create_id,
+    @list << Merchant.new(
+      name:       merchant_name[:name],
+      id:         create_id,
       created_at: Time.now,
       updated_at: Time.now
-      })
+    )
   end
 
   def update(id, attributes)

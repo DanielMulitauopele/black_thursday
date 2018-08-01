@@ -1,17 +1,15 @@
 require_relative 'test_helper'
 require_relative '../lib/customer.rb'
 
-
 class CustomerTest < Minitest::Test
-
   def setup
-    @customer = Customer.new({
+    @customer = Customer.new(
       id: 6,
       first_name: "Joan",
       last_name: "Clarke",
       created_at: "1972-07-30 18:08:53 UTC",
       updated_at: "2016-01-11 18:30:35 UTC"
-      })
+    )
   end
 
   def test_it_exists

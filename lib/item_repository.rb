@@ -31,15 +31,15 @@ class ItemRepository
   end
 
   def create(attributes)
-    @list << Item.new({
-      id: create_id,
-      created_at: Time.now.to_s,
-      updated_at: Time.now.to_s,
-      name: attributes[:name],
+    @list << Item.new(
+      id:          create_id,
+      created_at:  Time.now.to_s,
+      updated_at:  Time.now.to_s,
+      name:        attributes[:name],
       description: attributes[:description],
-      unit_price: attributes[:unit_price],
+      unit_price:  attributes[:unit_price],
       merchant_id: attributes[:merchant_id]
-      })
+    )
   end
 
   def update(id, attributes)

@@ -24,14 +24,14 @@ class InvoiceRepository
   end
 
   def create(attributes)
-    @list << Invoice.new({
-      id: create_id,
-      created_at: Time.now.to_s,
-      updated_at: Time.now.to_s,
+    @list << Invoice.new(
+      id:          create_id,
+      created_at:  Time.now.to_s,
+      updated_at:  Time.now.to_s,
       customer_id: attributes[:customer_id],
       merchant_id: attributes[:merchant_id],
-      status: attributes[:status]
-      })
+      status:      attributes[:status]
+    )
   end
 
   def update(id, attributes)

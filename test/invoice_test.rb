@@ -5,14 +5,14 @@ require 'pry'
 
 class InvoiceTest < MiniTest::Test
   def setup
-    @invoice = Invoice.new({
+    @invoice = Invoice.new(
       id: 1,
       customer_id: 1,
       merchant_id: 12335938,
       status: "pending",
       created_at: "2009-02-07",
       updated_at: "2014-03-15"
-      })
+    )
   end
 
   def test_it_exists
