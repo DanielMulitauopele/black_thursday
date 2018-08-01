@@ -114,11 +114,11 @@ class SalesAnalyst
     invoice_created_day_of_week = @invoice_repo.list.map do |invoice|
       weekday(invoice.created_at.to_s)
     end
-    total_invoice_counts_by_day_of_week = invoice_created_day_of_week.each_with_object(Hash.new(0)) do |day, counts|
+    invoice_counts_by_day = invoice_created_day_of_week.each_with_object(Hash.new(0)) do |day, counts|
       counts[day] += 1
     end
-    stddev = standard_deviation(total_invoice_counts_by_day_of_week.values, average_invoice_counts_per_day)
-    day_with_highest_invoice_count = total_invoice_counts_by_day_of_week.find_all do |day, invoice_count|
+    stddev = standard_deviation(invoice_counts_by_day.values, average_invoice_counts_per_day)
+    day_with_highest_invoice_count = invoice_counts_by_day.find_all do |_day, invoice_count|
       invoice_count > (stddev + average_invoice_counts_per_day).round.to_i
     end
     pull_first_element_from_pair(day_with_highest_invoice_count)
@@ -206,20 +206,20 @@ class SalesAnalyst
   end
 
   def most_sold_item_for_merchant(merchant_id)
-    grouped_invoice_items_by_item_id = merchant_id_to_invoice_items_grouped_by_item_ids(merchant_id)
+    grouped_invoice_items_by_item_id = invoice_items_grouped_by_item_ids(merchant_id)
     item_id_and_quantity_sold = {}
     grouped_invoice_items_by_item_id.each do |item_id, invoice_items|
       item_id_and_quantity_sold[item_id] = total_quantity(invoice_items)
     end
     highest_quantity = item_id_and_quantity_sold.values.max
-    highest_quantity_item_id = item_id_and_quantity_sold.find_all do |item_id, quantity|
+    highest_quantity_item_id = item_id_and_quantity_sold.find_all do |_item_id, quantity|
       quantity == highest_quantity
     end
     convert_to_item_objects(highest_quantity_item_id)
   end
 
   def best_item_for_merchant(merchant_id)
-    grouped_invoice_items_by_item_id = merchant_id_to_invoice_items_grouped_by_item_ids(merchant_id)
+    grouped_invoice_items_by_item_id = invoice_items_grouped_by_item_ids(merchant_id)
     item_id_and_revenue = {}
     grouped_invoice_items_by_item_id.each do |item_id, invoice_items|
       item_id_and_revenue[item_id] = total_revenue(invoice_items)
@@ -301,18 +301,15 @@ class SalesAnalyst
 
   def total_quantity(array)
     array.inject(0) do |sum, num|
-        sum + num.quantity.to_i
+      sum + num.quantity.to_i
     end
   end
 
-  def merchant_id_to_invoice_items_grouped_by_item_ids(merchant_id)
+  def invoice_items_grouped_by_item_ids(merchant_id)
     merchant_invoices = @invoice_repo.find_all_by_merchant_id(merchant_id)
     invoice_items = merchant_invoices.map do |invoice|
       @invoice_item_repo.find_all_by_invoice_id(invoice.id) unless invoice_paid_in_full?(invoice.id) == false
     end.flatten.compact
-    invoice_items.group_by do |invoice_item|
-      invoice_item.item_id
-    end
+    invoice_items.group_by(&:item_id)
   end
-
 end
