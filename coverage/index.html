@@ -14,26 +14,26 @@
       <img src="./assets/0.10.2/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2018-08-01T08:37:43-06:00">2018-08-01T08:37:43-06:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2018-08-01T09:00:24-06:00">2018-08-01T09:00:24-06:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
         <div class="file_list_container" id="AllFiles">
   <h2>
     <span class="group_name">All Files</span>
-    (<span class="covered_percent"><span class="yellow">84.62%</span></span>
+    (<span class="covered_percent"><span class="yellow">84.58%</span></span>
      covered at
      <span class="covered_strength">
        <span class="green">
-         1254.51
+         1257.24
        </span>
     </span> hits/line)
   </h2>
   <a name="AllFiles"></a>
   <div>
     <b>15</b> files in total.
-    <b>455</b> relevant lines. 
-    <span class="green"><b>385</b> lines covered</span> and
+    <b>454</b> relevant lines. 
+    <span class="green"><b>384</b> lines covered</span> and
     <span class="red"><b>70</b> lines missed </span>
   </div>
   <table class="file_list">
@@ -162,12 +162,12 @@
       
       <tr>
         <td class="strong"><a href="#65666b580ef860ad51bf8440e62cd40c5e0d4144" class="src_link" title="lib/sales_analyst.rb">lib/sales_analyst.rb</a></td>
-        <td class="green strong">95.68 %</td>
-        <td>318</td>
-        <td>185</td>
-        <td>177</td>
+        <td class="green strong">95.65 %</td>
+        <td>317</td>
+        <td>184</td>
+        <td>176</td>
         <td>8</td>
-        <td>141.0</td>
+        <td>141.7</td>
       </tr>
       
       <tr>
@@ -2612,10 +2612,10 @@
         <div class="source_table" id="65666b580ef860ad51bf8440e62cd40c5e0d4144">
   <div class="header">
     <h3>lib/sales_analyst.rb</h3>
-    <h4><span class="green">95.68 %</span> covered</h4>
+    <h4><span class="green">95.65 %</span> covered</h4>
     <div>
-      <b>185</b> relevant lines. 
-      <span class="green"><b>177</b> lines covered</span> and
+      <b>184</b> relevant lines. 
+      <span class="green"><b>176</b> lines covered</span> and
       <span class="red"><b>8</b> lines missed.</span>
     </div>
   </div>
@@ -3322,7 +3322,7 @@
         <li class="covered" data-hits="1" data-linenumber="117">
           <span class="hits">1</span>
           
-          <code class="ruby">    total_invoice_counts_by_day_of_week = invoice_created_day_of_week.each_with_object(Hash.new(0)) do |day, counts|</code>
+          <code class="ruby">    invoice_counts_by_day = invoice_created_day_of_week.each_with_object(Hash.new(0)) do |day, counts|</code>
         </li>
       
         <li class="covered" data-hits="4" data-linenumber="118">
@@ -3340,13 +3340,13 @@
         <li class="covered" data-hits="1" data-linenumber="120">
           <span class="hits">1</span>
           
-          <code class="ruby">    stddev = standard_deviation(total_invoice_counts_by_day_of_week.values, average_invoice_counts_per_day)</code>
+          <code class="ruby">    stddev = standard_deviation(invoice_counts_by_day.values, average_invoice_counts_per_day)</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="121">
           <span class="hits">1</span>
           
-          <code class="ruby">    day_with_highest_invoice_count = total_invoice_counts_by_day_of_week.find_all do |day, invoice_count|</code>
+          <code class="ruby">    day_with_highest_invoice_count = invoice_counts_by_day.find_all do |_day, invoice_count|</code>
         </li>
       
         <li class="covered" data-hits="3" data-linenumber="122">
@@ -3874,7 +3874,7 @@
         <li class="covered" data-hits="1" data-linenumber="209">
           <span class="hits">1</span>
           
-          <code class="ruby">    grouped_invoice_items_by_item_id = merchant_id_to_invoice_items_grouped_by_item_ids(merchant_id)</code>
+          <code class="ruby">    grouped_invoice_items_by_item_id = invoice_items_grouped_by_item_ids(merchant_id)</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="210">
@@ -3910,7 +3910,7 @@
         <li class="covered" data-hits="1" data-linenumber="215">
           <span class="hits">1</span>
           
-          <code class="ruby">    highest_quantity_item_id = item_id_and_quantity_sold.find_all do |item_id, quantity|</code>
+          <code class="ruby">    highest_quantity_item_id = item_id_and_quantity_sold.find_all do |_item_id, quantity|</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="216">
@@ -3952,7 +3952,7 @@
         <li class="covered" data-hits="1" data-linenumber="222">
           <span class="hits">1</span>
           
-          <code class="ruby">    grouped_invoice_items_by_item_id = merchant_id_to_invoice_items_grouped_by_item_ids(merchant_id)</code>
+          <code class="ruby">    grouped_invoice_items_by_item_id = invoice_items_grouped_by_item_ids(merchant_id)</code>
         </li>
       
         <li class="covered" data-hits="1" data-linenumber="223">
@@ -4444,7 +4444,7 @@
         <li class="covered" data-hits="1" data-linenumber="304">
           <span class="hits">1</span>
           
-          <code class="ruby">        sum + num.quantity.to_i</code>
+          <code class="ruby">      sum + num.quantity.to_i</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="305">
@@ -4468,7 +4468,7 @@
         <li class="covered" data-hits="1" data-linenumber="308">
           <span class="hits">1</span>
           
-          <code class="ruby">  def merchant_id_to_invoice_items_grouped_by_item_ids(merchant_id)</code>
+          <code class="ruby">  def invoice_items_grouped_by_item_ids(merchant_id)</code>
         </li>
       
         <li class="covered" data-hits="2" data-linenumber="309">
@@ -4498,19 +4498,19 @@
         <li class="covered" data-hits="2" data-linenumber="313">
           <span class="hits">2</span>
           
-          <code class="ruby">    invoice_items.group_by do |invoice_item|</code>
+          <code class="ruby">    invoice_items.group_by(&amp;:item_id)</code>
         </li>
       
-        <li class="covered" data-hits="2" data-linenumber="314">
-          <span class="hits">2</span>
+        <li class="never" data-hits="" data-linenumber="314">
           
-          <code class="ruby">      invoice_item.item_id</code>
+          
+          <code class="ruby">      # invoice_item.item_id</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="315">
           
           
-          <code class="ruby">    end</code>
+          <code class="ruby">    # end</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="316">
@@ -4520,12 +4520,6 @@
         </li>
       
         <li class="never" data-hits="" data-linenumber="317">
-          
-          
-          <code class="ruby"></code>
-        </li>
-      
-        <li class="never" data-hits="" data-linenumber="318">
           
           
           <code class="ruby">end</code>
