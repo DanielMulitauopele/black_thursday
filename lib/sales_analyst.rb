@@ -177,7 +177,7 @@ class SalesAnalyst
     sorted_highest_rev_per_mer = revenue_earned_per_merchant.sort_by do |_merchant, revenue|
       revenue
     end.reverse
-    sorted_highest_merchants = pull_first_element_from_pair(sorted_highest_rev_per_mer)
+    pull_first_element_from_pair(sorted_highest_rev_per_mer)
   end
 
   def top_revenue_earners(number_of_top=20)
